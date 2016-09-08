@@ -1,6 +1,6 @@
 .catalog:
     name: "Convoy GlusterFS"
-    version: "v0.2"
+    version: "v0.11.0"
     description: "Convoy GlusterFS - Docker volume plugin"
     questions:
      - variable: "VOLUME_POOL"
@@ -8,16 +8,17 @@
        label: "GlusterFS Volume"
        required: true
        type: "string"
-       default: my_vol
-     - variable: "GLUSTERFS_SERVICE"
-       label: "GlusterFS Service"
-       type: "service"
+       description: "The name of volume created in GlusterFS"
+     - variable: "SERVERS"
+       label: "GlusterFS Servers"
+       type: "string"
        required: true
-       description: Service that is running GlusterFS
+       description: Servers' name for GlusterFS, separate by comma
 
-convoy-gluster:
+convoy-glusterfs:
     metadata:
         volume_pool: "${VOLUME_POOL}"
+        servers: "${SERVERS}"
     health_check:
         request_line: GET /healthcheck HTTP/1.0
         port: 10241
@@ -26,7 +27,7 @@ convoy-gluster:
         unhealthy_threshold: 3
         healthy_threshold: 2
 
-convoy-gluster-storagepool:
+convoy-glusterfs-storagepool:
     scale: 1
     health_check:
         request_line: GET /healthcheck HTTP/1.0

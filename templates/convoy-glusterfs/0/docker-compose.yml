@@ -1,8 +1,7 @@
-convoy-gluster:
+convoy-glusterfs:
   labels:
     io.rancher.container.create_agent: 'true'
     io.rancher.scheduler.global: 'true'
-    io.rancher.scheduler.affinity:host_label_soft: ${HOST_LABEL}
   privileged: true
   pid: host
   volumes:
@@ -10,14 +9,13 @@ convoy-gluster:
     - /proc:/host/proc
     - /var/run:/host/var/run
     - /etc/docker/plugins:/etc/docker/plugins
-  external_links:
-    - "${GLUSTERFS_SERVICE}:glusterfs"
-  image: rancher/convoy-agent:v0.1.2
+  image: yasker/convoy-agent:v0.11.0
   command: volume-agent-glusterfs
 
-convoy-gluster-storagepool:
+convoy-glusterfs-storagepool:
   labels:
     io.rancher.container.create_agent: 'true'
-    io.rancher.scheduler.affinity:host_label_soft: ${HOST_LABEL}
-  image: rancher/convoy-agent:v0.1.2
+  volumes:
+    - /var/run:/host/var/run
+  image: yasker/convoy-agent:v0.11.0
   command: storagepool-agent
